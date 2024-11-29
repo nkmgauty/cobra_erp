@@ -1,142 +1,141 @@
 import React, { useState } from "react";
-import erpimg from "../assets/Images/ERP_img.jpg";
+// import erpimg from "../assets/Images/ERP_img.jpg";
 import Logo from "../assets/Images/Cobra_logo.png";
 import erps from "../assets/Images/Erp_side.jpg";
-import { Link } from "react-router-dom";
-
-
 
 function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
-  const [email, setEmail] = useState('')
-const [password, setPassword] = useState('')
-const [emailError, setEmailError] = useState('')
-const [passwordError, setPasswordError] = useState('')
+  const validateInputs = () => {
+    let isValid = true;
+    setEmailError('');
+    setPasswordError('');
 
-const onButtonClick = () => {
+    if (!email) {
+      setEmailError('Please enter your email');
+      isValid = false;
+    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+      setEmailError('Please enter a valid email');
+      isValid = false;
+    }
 
-setEmailError('')
-setPasswordError('')
+    if (!password) {
+      setPasswordError('Please enter a password');
+      isValid = false;
+    } else if (password.length < 8) {
+      setPasswordError('The password must be 8 characters or longer');
+      isValid = false;
+    }
 
+    return isValid;
+  };
 
-if ('' === email) {
-  setEmailError('Please enter your email')
-  return
-}
+  const onButtonClick = () => {
+    if (validateInputs()) {
+      console.log('Form submitted', { email, password });
+    }
+  };
 
-if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-  setEmailError('Please enter a valid email')
-  return
-}
-
-if ('' === password) {
-  setPasswordError('Please enter a password')
-  return
-}
-
-if (password.length < 7) {
-  setPasswordError('The password must be 8 characters or longer')
-  return
-}
-
-
-}
- 
-  
   return (
-    <>
-      {/* <div className="flex flex-row bg-blue-400 h-screen p-8">
-<div className="flex bg-slate-200 shadow-xl rounded-lg overflow-hidden w-full justify-evenly m-12 p-14">
-    <div className="p-12">
-        <img src={erpimg} className="h-80 w-80 object-cover opacity-100 transition-opacity duration-300 hover:opacity-80"></img>
-    </div>
-    <div className="p-20 justify-evenly ">
-    <h2 className="text-2xl font-semibold text-black-700 text-center mb-4">
-            Login
-          </h2>
-   <form className="flex flex-col ">
-    <div className="mb-4">
-    <label className="block text-black-700 mb-1">Email</label>
-    <input type="email" placeholder=" Email" className="w-full border rounded-lg focus:outline-none focus:border-blue-500 px-4 py-2  invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
-    </input> </div>
-    <div className="mb-4">
-    <label className="block text-black-700 mb-1">Password</label>
-    <input type="Password" placeholder=" Password" className="w-full border rounded-lg focus:outline-none focus:border-blue-500 px-4 py-2  invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500">
-    </input> </div>
-    <button className="bg-green-500 border rounded-lg p-1 hover:bg-green-300">Login</button>
-   </form>
-</div>
-</div>
-</div> */}
+    <div className="h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600 relative">
+      {/* Background Overlay */}
+      <div className="absolute inset-0 bg-black opacity-50"></div>
 
-      <div className="flex  justify-center items-center h-screen bg-gradient-to-r from-gray-200 to-gray-400 ">
-        <div className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 p-6 flex flex-row lg:flex-row justify-around  shadow-lg rounded bg-white  mx-auto  ">
-          <div className="flex items-center justify-center flex-col">
-            <div className="flex  items-center justify-center pb-4 hover:opacity-80">
-              <img
-                src={Logo}
-                className="h-20 w-20 object-contain md:h-32 md:w-32"
-              ></img>
-            </div>
-            <img src={erps} className="h-52 w-38 rounded-full"></img>
+      <div className="relative w-full sm:w-3/4 md:w-2/3 lg:w-1/2 p-6 flex flex-row shadow-2xl rounded-lg bg-white">
+        {/* Logo and Image Section */}
+        <div className="hidden lg:flex flex-col items-center justify-center w-1/3 bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-6 rounded-l-lg">
+          <img src={Logo} alt="Logo" className="h-24 w-48 mb-4" />
+          <img src={erps} alt="ERP" className="h-40 w-40 rounded-full border-4 border-white shadow-lg" />
+          <h2 className="mt-4 text-lg font-semibold">Welcome Back!</h2>
+          <p className="text-sm text-gray-200 mt-2">
+            Log in to continue managing your account.
+          </p>
+        </div>
+
+        {/* Login Form Section */}
+        <div className="w-full lg:w-2/3 p-6">
+          <h1 className="text-center text-2xl md:text-3xl font-bold text-gray-800">Login</h1>
+          <p className="text-center text-gray-600 mt-2">
+            Enter your credentials to access your account.
+          </p>
+          <hr className="mt-4" />
+
+          {/* Email Input */}
+          <div className="mt-6">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email Address
+            </label>
+            <input
+              type="email"
+              id="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 px-4 py-2 mt-1 text-sm"
+            />
+            {emailError && (
+              <p className="text-red-500 text-xs mt-1 flex items-center">
+                <span className="material-icons text-red-500 mr-1">error</span>
+                {emailError}
+              </p>
+            )}
           </div>
-          <div className="divider p-[1px] bg-black divider-horizontal"> </div>
 
-          <div className="w-full md:w-1/2">
-            <h1 className=" text-center text-xl md:text-2xl font-semibold">
+          {/* Password Input */}
+          <div className="mt-4">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 px-4 py-2 mt-1 text-sm"
+            />
+            {passwordError && (
+              <p className="text-red-500 text-xs mt-1 flex items-center">
+                <span className="material-icons text-red-500 mr-1">error</span>
+                {passwordError}
+              </p>
+            )}
+          </div>
+
+          {/* Remember Me and Forgot Password */}
+          <div className="flex justify-between items-center mt-4">
+            <label className="flex items-center">
+              <input type="checkbox" className="form-checkbox h-4 w-4 text-indigo-600 rounded" />
+              <span className="ml-2 text-sm text-gray-600">Remember me</span>
+            </label>
+            <a href="#" className="text-sm text-indigo-600 hover:underline">
+              Forgot Password?
+            </a>
+          </div>
+
+          {/* Login Button */}
+          <div className="mt-6">
+            <button
+              onClick={onButtonClick}
+              className="w-full bg-gradient-to-r from-indigo-500 to-blue-500 text-white py-2 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out"
+            >
               Login
-            </h1>
-            <hr className="mt-3"></hr>
-            <div className="mt-3 flex flex-col">
-              <label htmlFor="username" className="pb-1 text-sm md:text-base">
-                Username
-              </label>
-              <input
-                type="email"
-                id="email"
-                className="w-full border shadow-sm rounded-lg focus:outline-none focus:border-blue-500 px-4 py-2  invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 text-sm md:text-base"
-                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                value={email}
-                onChange={(ev) => setEmail(ev.target.value)}
-                
-              ></input>
-              <label className="errorLabel">{emailError}</label>
-            </div>
-            <div className="mt-3 flex flex-col">
-              <label htmlFor="password" className="pb-1 text-sm md:text-base">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(ev) => setPassword(ev.target.value)}
-                className="w-full border shadow-sm rounded-lg focus:outline-none focus:border-blue-500 px-4 py-2  invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 text-sm md:text-base"
-              ></input>
-              <label className="errorLabel">{passwordError}</label>
-            </div>
-            <div className=" w- auto flex justify-between items-center pt-2 text-sm md:text-base">
-              <div className="flex">
-                <input type="checkbox"></input>
-                <label>Remember me</label>
-              </div>
-              <div>
-                <a href="#" className="text-sky-700">
-                  Forgot Password?
-                </a>
-              </div>
-            </div>
-            <div className="flex w-full justify-center pt-3">
-              
-                <button onClick={onButtonClick} className="border rounded  w-full h-12   bg-green-500 p-2 hover:bg-green-400">
-                  Login
-                </button>
-              
-            </div>
+            </button>
           </div>
+
+          {/* Footer */}
+          <p className="text-center text-sm text-gray-600 mt-6">
+            Don’t have an account?{" "}
+            <a href="#" className="text-indigo-600 font-semibold hover:underline">
+              Sign Up
+            </a>
+          </p>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
